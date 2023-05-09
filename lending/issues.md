@@ -38,6 +38,9 @@ Following cases fall in this category
 
 This is another peculiar case with decentralized lending platforms where borrowers are allowed to create their own borrowing terms and lenders provide a matching offer that is consistent with borrower terms. Such cases can create another problem - defining terms such that borrowers cannot be liquidated.
 
-| #                           | Protocol  | Issue                                                                |
-| --------------------------- | --------- | -------------------------------------------------------------------- |
-| [0006](../database/0006.md) | Teller V2 | Overwrite existing collateral commitment to make collateral amount 0 |
+| #                           | Protocol    | Issue                                                                       |
+| --------------------------- | ----------- | --------------------------------------------------------------------------- |
+| [0006](../database/0006.md) | Teller V2   | Overwrite existing collateral commitment to make collateral amount 0        |
+| [0007](../database/0007.md) | Debt DAO    | Line of Credit array can be corrupted by a borrower to prevent liquidation  |
+| [0008](../database/0008.md) | AbraNFT     | Borrowers can construct loans with malicious oracles that block liquidation |
+| [0009](../database/0009.md) | Wild Credit | Liquidation can be avoided by depositing a UniV3 position with 0 liquidity  |
