@@ -44,3 +44,15 @@ This is another peculiar case with decentralized lending platforms where borrowe
 | [0007](../database/0007.md) | Debt DAO    | Line of Credit array can be corrupted by a borrower to prevent liquidation  |
 | [0008](../database/0008.md) | AbraNFT     | Borrowers can construct loans with malicious oracles that block liquidation |
 | [0009](../database/0009.md) | Wild Credit | Liquidation can be avoided by depositing a UniV3 position with 0 liquidity  |
+| [0010](../database/0010.md) | Taurus      | Liquidation gets reverted in an edge case when price drops 99%              |
+| [0011](../database/0011.md) | Isomorph    | DOS attack avoids liquidation                                               |
+
+---
+
+## 3. Debt closed without repayment
+
+This class of errors relate to scenarios where a borrower can manipulate the state to move loan to `repaid` status without an actual repayment to back it. This would cause a permanent loss to lenders who can no longer claim a receivable from borrowers. Borrower can use the `repaid` status to claim back his collateral.
+
+| #                           | Protocol | Issue                                                                            |
+| --------------------------- | -------- | -------------------------------------------------------------------------------- |
+| [0012](../database/0012.md) | Debt DAO | Non existent credit `id` can be used to close all loans against that credit line |
