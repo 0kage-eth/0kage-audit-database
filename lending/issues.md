@@ -53,6 +53,19 @@ This is another peculiar case with decentralized lending platforms where borrowe
 
 This class of errors relate to scenarios where a borrower can manipulate the state to move loan to `repaid` status without an actual repayment to back it. This would cause a permanent loss to lenders who can no longer claim a receivable from borrowers. Borrower can use the `repaid` status to claim back his collateral.
 
-| #                           | Protocol | Issue                                                                            |
-| --------------------------- | -------- | -------------------------------------------------------------------------------- |
-| [0012](../database/0012.md) | Debt DAO | Non existent credit `id` can be used to close all loans against that credit line |
+| #                           | Protocol | Issue                                                                               |
+| --------------------------- | -------- | ----------------------------------------------------------------------------------- |
+| [0012](../database/0012.md) | Debt DAO | Non existent credit `id` can be used to close all loans against that credit line    |
+| [0013](../database/0013.md) | Timeswap | Wrong placement of a condition allows borrower to withdraw all collateral           |
+| [0014](../database/0014.md) | Taurus   | Missing inputs validation allows keeper to escalate permissions & payback all loans |
+| [0015](../database/0015.md) | Astaria  | Anyone can delete liens (lien created on new borrowing)                             |
+
+---
+
+### 4. Repayments paused while liquidations enabled
+
+This class of errors relates to a state of lending protocol where repayments are paused while liquidations are active. This is unfair to genuine borrowers who might want to repay/add more collateral to improve their health factor. It is ok if liquidations are also paused during this time but denying access to borrowers to repay while allowing liquidators to liquidate can cause losses to borrowers. Note that all liquidation penalties are borne by borrowers -> so any DOS that effects borrower repayments introduce vulnerabilities in protocol.
+
+| #                           | Protocol  | Issue                                                 |
+| --------------------------- | --------- | ----------------------------------------------------- |
+| [0016](../database/0016.md) | Blueberry | Liquidation is possible even when repayment is paused |
