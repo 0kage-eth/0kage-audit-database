@@ -66,6 +66,23 @@ This class of errors relate to scenarios where a borrower can manipulate the sta
 
 This class of errors relates to a state of lending protocol where repayments are paused while liquidations are active. This is unfair to genuine borrowers who might want to repay/add more collateral to improve their health factor. It is ok if liquidations are also paused during this time but denying access to borrowers to repay while allowing liquidators to liquidate can cause losses to borrowers. Note that all liquidation penalties are borne by borrowers -> so any DOS that effects borrower repayments introduce vulnerabilities in protocol.
 
-| #                           | Protocol  | Issue                                                 |
-| --------------------------- | --------- | ----------------------------------------------------- |
-| [0016](../database/0016.md) | Blueberry | Liquidation is possible even when repayment is paused |
+| #                           | Protocol  | Issue                                                                          |
+| --------------------------- | --------- | ------------------------------------------------------------------------------ |
+| [0016](../database/0016.md) | Blueberry | Liquidation is possible even when repayment is paused                          |
+| [0017](../database/0017.md) | Lyra      | Users unable to close positions when price is stale or circuit breaker tripped |
+
+---
+
+### 5. Governance can disallow tokens that might impact existing repayments and liquidations
+
+- In lending/borrowing protocols, adding and removing tokens listed for borrowing/collateral are usually decided by governance. Due to price manipulation risks, governance whitelists only specific tokens that can be considered for lending and colleral purposes.
+
+- In some circumstances, when governance decides to de-whitelist a specific token, it might create issues for existing borrowings. Possibility of DOS for repayments and liquidations exists if such de-whitelisting is not done carefully. This class of errors happen due to inconsistent checks that might fail while executing crucial repayment/liquidation operations
+
+| #                           | Protocol  | Issue                                                               |
+| --------------------------- | --------- | ------------------------------------------------------------------- |
+| [0018](../database/0018.md) | Blueberry | De-whitelisting of repay tokens causes a DOS for liquidation        |
+| [0019](../database/0019.md) | Isomorph  | Pausing collateral prevents repay/liquidation                       |
+| [0020](../database/0020.md) | Isomorph  | Liquidation allowed while repayments are disabled in some scenarios |
+
+---
