@@ -86,3 +86,15 @@ This class of errors relates to a state of lending protocol where repayments are
 | [0020](../database/0020.md) | Isomorph  | Liquidation allowed while repayments are disabled in some scenarios |
 
 ---
+
+### 6. Pausing repayments/liquidations can cause instant liquidation when unpaused
+
+- When a lending protocol has a pausing functionality that pauses both repayments and liquidations, there is an interesting vulnerability that can potentially creep in. During the paused period, price fluctuations can cause borrowing to be under-collateralized & when pausing ends, liquidation (which usually happens via bots) kicks in & a borrower is forcibly liquidated without having a chance to repay/add collateral
+
+- This is unfair to borrowers. While borrowers are mostly individual wallets, liquidation is usually managed via automated bots. Only way to prevent this is to outrun the bots which is impractical for wallet owners. A fix for this issue is usually when unpausing provides a grace period to borrowers in which liquidation cannot be executed
+
+- While a large grace period can create insolvency risks, a reasonable grace period (say 24 hrs) can provide an opportunity for genuine borrowers to take mitigation steps
+
+| #                           | Protocol  | Issue                                                  |
+| --------------------------- | --------- | ------------------------------------------------------ |
+| [0021](../database/0021.md) | Blueberry | Re-ctivating repayments can cause instant liquidations |
