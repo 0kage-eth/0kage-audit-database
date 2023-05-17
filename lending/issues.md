@@ -5,14 +5,16 @@ Key issues in lending and borrowing platforms can be classfied into
 | #   | Issue                                                       |
 | --- | ----------------------------------------------------------- |
 | 1   | Borrowers' collateral is liquidated before default          |
-| 2   | Borrowing closed without repayment                          |
-| 3   | Repayments paused while liquidation is active               |
-| 4   | Collateral pause stops existing repayment and liquidations  |
-| 5   | Liquidator takes collateral without proportionate repayment |
-| 6   | Infinite loan roll-over                                     |
-| 7   | Repayments sent to 0 address                                |
-| 8   | Borrowers permanently unable to repay loan                  |
-| 9   | Borrower repayment only partially credited                  |
+| 2   | Loan terms allow borrowers to avoid liquidation             |
+| 3   | Borrowing closed without repayment                          |
+| 4   | Repayments paused while liquidation is active               |
+| 5   | Governance allows liquidations while disabling repayments   |
+| 6   | Pausing contracts can cause instant liquidations            |
+| 7   | Liquidator takes collateral without proportionate repayment |
+| 8   | Infinite loan roll-over                                     |
+| 9   | Repayments sent to 0 address                                |
+| 10  | Borrowers permanently unable to repay loan                  |
+| 11  | Borrower repayment only partially credited                  |
 
 ---
 
@@ -62,7 +64,7 @@ This class of errors relate to scenarios where a borrower can manipulate the sta
 
 ---
 
-### 4. Repayments paused while liquidations enabled
+## 4. Repayments paused while liquidation is active
 
 This class of errors relates to a state of lending protocol where repayments are paused while liquidations are active. This is unfair to genuine borrowers who might want to repay/add more collateral to improve their health factor. It is ok if liquidations are also paused during this time but denying access to borrowers to repay while allowing liquidators to liquidate can cause losses to borrowers. Note that all liquidation penalties are borne by borrowers -> so any DOS that effects borrower repayments introduce vulnerabilities in protocol.
 
@@ -73,7 +75,7 @@ This class of errors relates to a state of lending protocol where repayments are
 
 ---
 
-### 5. Governance can disallow tokens that might impact existing repayments and liquidations
+## 5. Governance can disallow tokens that might impact existing repayments and liquidations
 
 - In lending/borrowing protocols, adding and removing tokens listed for borrowing/collateral are usually decided by governance. Due to price manipulation risks, governance whitelists only specific tokens that can be considered for lending and colleral purposes.
 
@@ -87,7 +89,7 @@ This class of errors relates to a state of lending protocol where repayments are
 
 ---
 
-### 6. Pausing repayments/liquidations can cause instant liquidation when unpaused
+## 6. Pausing repayments/liquidations can cause instant liquidation when unpaused
 
 - When a lending protocol has a pausing functionality that pauses both repayments and liquidations, there is an interesting vulnerability that can potentially creep in. During the paused period, price fluctuations can cause borrowing to be under-collateralized & when pausing ends, liquidation (which usually happens via bots) kicks in & a borrower is forcibly liquidated without having a chance to repay/add collateral
 
@@ -98,3 +100,36 @@ This class of errors relates to a state of lending protocol where repayments are
 | #                           | Protocol  | Issue                                                  |
 | --------------------------- | --------- | ------------------------------------------------------ |
 | [0021](../database/0021.md) | Blueberry | Re-ctivating repayments can cause instant liquidations |
+
+---
+
+## 7. Liquidator can seize collateral without making proportionate payment
+
+In this class of vulnerabilities, liquidators who liquidate an undercollateralized borrower take possession of the collateral without paying adequate amount. Typically, a liquidator provides liquidity to the lender when borrowers at risk by buying the collateral at a discount. The proceeds are used to payout the lender, liquidator ends up owning collateral at a discount and borrower gets back any leftover amount.
+
+If a liquidator can accquire collateral without making proportionate payment, lender will be left stranded.
+
+| #                           | Protocol  | Issue                                                                    |
+| --------------------------- | --------- | ------------------------------------------------------------------------ |
+| [0022](../database/0022.md) | Blueberry | Liquidator pays for partial position and gets paid the entire collateral |
+
+---
+
+## 8. Infinite Loan Rollover
+
+If borrower can roll-over loan infinitely, there is no way a lender gets access to the capital lent. While the argument that lender is getting paid interest for duration of loan exists, it can be argued that over a long enough period, default probability of every lender becomes 1. While collateral liquidation ensures that a lender most likely gets back his funds, lender has agreed to lend for a specific period & would not want to lose access to option to exit at a specific time. Since lender can't force liquidation or repayment, in infinite roll-over cases lenders end up losing access to their lent capital indefinitely.
+
+| #                           | Protocol | Issue                                                                           |
+| --------------------------- | -------- | ------------------------------------------------------------------------------- |
+| [0023](../database/0023.md) | Cooler   | Lender who allows for loan rollover will allow borrower to infinitely roll over |
+
+---
+
+## 9. Repayment sent to 0 address
+
+This is an obvious error, not necessarily restricted to repayments but to any kind of payments. If the logic allows for an accidental transfer to zero address, such tokens will be lost forever.
+
+| #                           | Protocol | Issue                                                  |
+| --------------------------- | -------- | ------------------------------------------------------ |
+| [0024](../database/0024.md) | Cooler   | Repayment sent to 0 address                            |
+| [0025](../database/0025.md) | Cooler   | Attackers can transfer assets in protocol to 0 address |
