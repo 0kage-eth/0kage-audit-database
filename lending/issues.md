@@ -133,3 +133,23 @@ This is an obvious error, not necessarily restricted to repayments but to any ki
 | --------------------------- | -------- | ------------------------------------------------------ |
 | [0024](../database/0024.md) | Cooler   | Repayment sent to 0 address                            |
 | [0025](../database/0025.md) | Cooler   | Attackers can transfer assets in protocol to 0 address |
+
+---
+
+## 10. Borrower permanently cannot repay loan
+
+This is a class of issues where system enters a state where a borrower can never repay his loan. This would mean that borrowers will eventually face liquidation of their collateral. This mostly happens when, under some circumstances, `repay` logic reverts when user tries to pay back
+
+| #                           | Protocol      | Issue                                                   |
+| --------------------------- | ------------- | ------------------------------------------------------- |
+| [0026](../database/0026.md) | Union Finance | `repayBorrow` becomes inaccessible to overdue borrowers |
+
+## 11. Repayment by borrower is not fully credited to the lender
+
+This case typically happens when borrower is running multiple loans on a platform but repaying for all those loans at an aggregated level. The correct logic in this case is that the repayment amount should be used to clear out first loan & then the excess should be used to clear second loan and so on...
+
+Problem occurs if the excess repayment amount after paying out the first loan is not credited to the second loan. In this case, while all the repaid amound is debited from borrower, only partial amount is credited back to lender. Excess gets trapped in the contract and there is no way to retrieve that back
+
+| #                           | Protocol | Issue                                                                                    |
+| --------------------------- | -------- | ---------------------------------------------------------------------------------------- |
+| [0027](../database/0027.md) | Astaria  | repayment towards multiple liens is not properly credited to payee causing loss of funds |
